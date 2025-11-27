@@ -1,5 +1,6 @@
 package com.spark.lms.courseservice.service;
 
+import com.spark.lms.courseservice.dto.CourseDTO;
 import com.spark.lms.courseservice.dto.StudentCourseDTO;
 import com.spark.lms.courseservice.entity.Course;
 import com.spark.lms.courseservice.entity.Enrollment;
@@ -24,20 +25,46 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<StudentCourseDTO> getEnrolledCourses(Long studentId) {
-        
+
         List<Enrollment> enrollments = enrollmentRepo.findByStudentId(studentId);
 
-       
         List<Long> courseIds = enrollments.stream()
                 .map(Enrollment::getCourseId)
                 .collect(Collectors.toList());
 
-       
         List<Course> courses = courseRepo.findAllById(courseIds);
 
-        
         return courses.stream()
                 .map(c -> new StudentCourseDTO(c.getId(), c.getTitle(), c.getDescription()))
                 .collect(Collectors.toList());
+    }
+
+  
+
+    @Override
+    public Course addCourse(CourseDTO dto, Long creatorId) {
+        Course course = new Course(dto.getTitle(), dto.getDescription(), creatorId);
+        return courseRepo.save(course);
+    }
+
+    @Override
+    public Course getCourseById(Long id) {
+        return courseRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+    }
+
+    @Override
+    public Course updateCourse(Long id, CourseDTO dto) {
+        Course course = getCourseById(id);
+
+        course.setTitle(dto.getTitle());
+        course.setDescription(dto.getDescription());
+
+        return courseRepo.save(course);
+    }
+
+    @Override
+    public void deleteCourse(Long id) {
+        courseRepo.deleteById(id);
     }
 }
