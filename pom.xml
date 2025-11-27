@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.3</version> <!-- Latest stable 3.x version -->
+        <version>3.1.4</version> <!-- Latest stable 3.x version -->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -52,8 +52,25 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+			<dependency>
+   			 <groupId>org.springframework.cloud</groupId>
+    			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
 
     </dependencies>
+    <dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <version>2022.0.5</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        
+    </dependencies>
+</dependencyManagement>
+
 
     <build>
         <plugins>
