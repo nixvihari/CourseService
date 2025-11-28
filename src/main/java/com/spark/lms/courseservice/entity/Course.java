@@ -1,6 +1,11 @@
 package com.spark.lms.courseservice.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "courses")
@@ -15,11 +20,11 @@ public class Course {
     private String description;
 
     @Column(name = "created_by")
-    private Long createdBy;  
+    private String createdBy;  
 
     public Course() {}
 
-    public Course(String title, String description, Long createdBy) {
+    public Course(String title, String description, String createdBy) {
         this.title = title;
         this.description = description;
         this.createdBy = createdBy;
@@ -34,6 +39,6 @@ public class Course {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public Long getCreatedBy() { return createdBy; }
-    public void setCreatedBy(Long createdBy) { this.createdBy = createdBy; }
+    public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
 }

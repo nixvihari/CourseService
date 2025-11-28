@@ -23,7 +23,7 @@ public class CourseController {
     // Get Enrolled Courses
     @GetMapping("/enrolledCourses")
     public ResponseEntity<List<StudentCourseDTO>> getEnrolledCourses(
-            @RequestHeader("X-User-Id") Long studentId,
+            @RequestHeader("X-User-Id") String studentId,
             @RequestHeader("X-Role") String role
     ) {
 
@@ -39,7 +39,7 @@ public class CourseController {
     @PostMapping
     public ResponseEntity<Course> addCourse(
             @RequestBody CourseDTO dto,
-            @RequestHeader("X-User-Id") Long creatorId,
+            @RequestHeader("X-User-Id") String creatorId,
             @RequestHeader("X-Role") String role
     ) {
         if (!role.equalsIgnoreCase("TEACHER") && !role.equalsIgnoreCase("ADMIN")) {
