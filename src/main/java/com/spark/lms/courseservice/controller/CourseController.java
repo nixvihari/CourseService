@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/api/courses")
 public class CourseController {
 
     private final CourseService courseService;
@@ -20,11 +20,11 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    
+    // Get Enrolled Courses
     @GetMapping("/enrolledCourses")
     public ResponseEntity<List<StudentCourseDTO>> getEnrolledCourses(
-            @RequestHeader("userId") Long studentId,
-            @RequestHeader("role") String role
+            @RequestHeader("X-User-Id") Long studentId,
+            @RequestHeader("X-Role") String role
     ) {
 
         if (!"STUDENT".equalsIgnoreCase(role)) {
@@ -35,14 +35,14 @@ public class CourseController {
         return ResponseEntity.ok(enrolledCourses);
     }
 
-    
+    //Add Course
     @PostMapping
     public ResponseEntity<Course> addCourse(
             @RequestBody CourseDTO dto,
-            @RequestHeader("userId") Long creatorId,
-            @RequestHeader("role") String role
+            @RequestHeader("X-User-Id") Long creatorId,
+            @RequestHeader("X-Role") String role
     ) {
-        if (!role.equals("TEACHER") && !role.equals("ADMIN")) {
+        if (!role.equalsIgnoreCase("TEACHER") && !role.equalsIgnoreCase("ADMIN")) {
             return ResponseEntity.status(403).build();
         }
 
@@ -60,9 +60,9 @@ public class CourseController {
     public ResponseEntity<Course> updateCourse(
             @PathVariable Long id,
             @RequestBody CourseDTO dto,
-            @RequestHeader("role") String role
+            @RequestHeader("X-Role") String role
     ) {
-        if (!role.equals("TEACHER") && !role.equals("ADMIN")) {
+        if (!role.equalsIgnoreCase("TEACHER") && !role.equalsIgnoreCase("ADMIN")) {
             return ResponseEntity.status(403).build();
         }
 
@@ -73,9 +73,9 @@ public class CourseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCourse(
             @PathVariable Long id,
-            @RequestHeader("role") String role
+            @RequestHeader("X-Role") String role
     ) {
-        if (!role.equals("ADMIN")) {
+        if (!role.equalsIgnoreCase("ADMIN")) {
             return ResponseEntity.status(403).build();
         }
 
