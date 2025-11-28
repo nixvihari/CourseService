@@ -9,6 +9,7 @@ import com.spark.lms.courseservice.repository.EnrollmentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +25,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<StudentCourseDTO> getEnrolledCourses(Long studentId) {
+    public List<StudentCourseDTO> getEnrolledCourses(String studentId) {
 
         List<Enrollment> enrollments = enrollmentRepo.findByStudentId(studentId);
 
@@ -42,7 +43,7 @@ public class CourseServiceImpl implements CourseService {
   
 
     @Override
-    public Course addCourse(CourseDTO dto, Long creatorId) {
+    public Course addCourse(CourseDTO dto, String creatorId) {
         Course course = new Course(dto.getTitle(), dto.getDescription(), creatorId);
         return courseRepo.save(course);
     }

@@ -16,13 +16,13 @@ public class Enrollment {
     private Long courseId;
 
     @Column(name = "student_id")
-    private Long studentId;
+    private String studentId;
 
     private LocalDateTime enrolledAt;
 
     public Enrollment() {}
 
-    public Enrollment(Long courseId, Long studentId, LocalDateTime enrolledAt) {
+    public Enrollment(Long courseId, String studentId, LocalDateTime enrolledAt) {
         this.courseId = courseId;
         this.studentId = studentId;
         this.enrolledAt = enrolledAt;
@@ -34,8 +34,8 @@ public class Enrollment {
     public Long getCourseId() { return courseId; }
     public void setCourseId(Long courseId) { this.courseId = courseId; }
 
-    public Long getStudentId() { return studentId; }
-    public void setStudentId(Long studentId) { this.studentId = studentId; }
+    public String getStudentId() { return studentId; }
+    public void setStudentId(String studentId) { this.studentId = studentId; }
 
     public LocalDateTime getEnrolledAt() { return enrolledAt; }
     public void setEnrolledAt(LocalDateTime enrolledAt) { this.enrolledAt = enrolledAt; }
