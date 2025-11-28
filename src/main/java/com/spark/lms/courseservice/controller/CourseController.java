@@ -1,6 +1,7 @@
 package com.spark.lms.courseservice.controller;
 
 import com.spark.lms.courseservice.dto.CourseDTO;
+import com.spark.lms.courseservice.dto.CourseResponseDTO;
 import com.spark.lms.courseservice.dto.StudentCourseDTO;
 import com.spark.lms.courseservice.entity.Course;
 import com.spark.lms.courseservice.service.CourseService;
@@ -19,6 +20,13 @@ public class CourseController {
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
+    
+    //Get Courses
+    @GetMapping
+    public ResponseEntity<List<CourseResponseDTO>> getCourses() {
+    	List<CourseResponseDTO> courseList = courseService.getCourses();
+    	return ResponseEntity.ok(courseList);
+    }
 
     // Get Enrolled Courses
     @GetMapping("/enrolledCourses")
@@ -36,7 +44,7 @@ public class CourseController {
     }
 
     //Add Course
-    @PostMapping
+    @PostMapping("/addCourse")
     public ResponseEntity<Course> addCourse(
             @RequestBody CourseDTO dto,
             @RequestHeader("X-User-Id") String creatorId,
@@ -56,7 +64,7 @@ public class CourseController {
     }
 
     // UPDATE COURSE
-    @PutMapping("/{id}")
+    @PutMapping("/updateCourse/{id}")
     public ResponseEntity<Course> updateCourse(
             @PathVariable Long id,
             @RequestBody CourseDTO dto,
@@ -70,7 +78,7 @@ public class CourseController {
     }
 
     // DELETE COURSE
-    @DeleteMapping("/{id}")
+    @DeleteMapping("deleteCourse/{id}")
     public ResponseEntity<Void> deleteCourse(
             @PathVariable Long id,
             @RequestHeader("X-Role") String role
