@@ -1,6 +1,8 @@
 package com.spark.lms.courseservice.controller;
 
 import com.spark.lms.courseservice.dto.CourseDTO;
+import com.spark.lms.courseservice.dto.CourseDetailsDTO;
+import com.spark.lms.courseservice.dto.CourseRequestDTO;
 import com.spark.lms.courseservice.dto.CourseResponseDTO;
 import com.spark.lms.courseservice.dto.StudentCourseDTO;
 import com.spark.lms.courseservice.entity.Course;
@@ -46,7 +48,7 @@ public class CourseController {
     //Add Course
     @PostMapping("/addCourse")
     public ResponseEntity<Course> addCourse(
-            @RequestBody CourseDTO dto,
+            @RequestBody CourseRequestDTO dto,
             @RequestHeader("X-User-Id") String creatorId,
             @RequestHeader("X-Role") String role
     ) {
@@ -59,8 +61,12 @@ public class CourseController {
 
     // GET COURSE BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
-        return ResponseEntity.ok(courseService.getCourseById(id));
+    public ResponseEntity<CourseDetailsDTO> getCourseById(
+    		@PathVariable Long id,
+    		@RequestHeader("X-User-Id") String studentId,
+            @RequestHeader("X-Role") String role
+    		) {
+        return ResponseEntity.ok(courseService.getCourseById(id, studentId));
     }
 
     // UPDATE COURSE

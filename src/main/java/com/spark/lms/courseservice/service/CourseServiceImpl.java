@@ -2,6 +2,8 @@ package com.spark.lms.courseservice.service;
 
 import com.spark.lms.courseservice.CourseServiceApplication;
 import com.spark.lms.courseservice.dto.CourseDTO;
+import com.spark.lms.courseservice.dto.CourseDetailsDTO;
+import com.spark.lms.courseservice.dto.CourseRequestDTO;
 import com.spark.lms.courseservice.dto.CourseResponseDTO;
 import com.spark.lms.courseservice.dto.StudentCourseDTO;
 import com.spark.lms.courseservice.entity.Course;
@@ -43,19 +45,34 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public Course addCourse(CourseDTO dto, String creatorId) {
-		Course course = new Course(dto.getTitle(), dto.getDescription(), creatorId);
+	public Course addCourse(CourseRequestDTO dto, String creatorId) {
+		Course course = new Course(dto.getTitle(), dto.getDescription(), dto.getCourseDuration(),
+				dto.getLearningObjectives(), creatorId);
 		return courseRepo.save(course);
 	}
 
 	@Override
-	public Course getCourseById(Long id) {
-		return courseRepo.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
+	public CourseDetailsDTO getCourseById(Long id, String studentId) {
+		Course foundCourse = courseRepo.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
+		Integer studentsEnrolled = enrollmentRepo.countStudentByCourseId(foundCourse.getId());
+		Boolean isEnrolled = enrollmentRepo.isEnrolled(id, studentId);
+		
+		CourseDetailsDTO courseDetails = new CourseDetailsDTO(
+		    id,
+		    foundCourse.getTitle(),
+		    foundCourse.getDescription(),
+		    foundCourse.getCourseDuration(),
+		    foundCourse.getLearningObjectives(),
+		    studentsEnrolled,
+		    isEnrolled,
+		    null
+		);
+		return courseDetails;
 	}
 
 	@Override
 	public Course updateCourse(Long id, CourseDTO dto) {
-		Course course = getCourseById(id);
+		Course course = courseRepo.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
 
 		course.setTitle(dto.getTitle());
 		course.setDescription(dto.getDescription());
@@ -71,7 +88,8 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public List<CourseResponseDTO> getCourses() {
 		List<Course> courses = courseRepo.findAll();
-		return courses.stream().map(course -> new CourseResponseDTO(course.getId(),course.getTitle(),course.getDescription()))
+		return courses.stream()
+				.map(course -> new CourseResponseDTO(course.getId(), course.getTitle(), course.getDescription()))
 				.collect(Collectors.toList());
 	}
 }
