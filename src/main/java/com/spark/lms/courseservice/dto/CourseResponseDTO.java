@@ -1,9 +1,17 @@
 package com.spark.lms.courseservice.dto;
 
-public class CourseResponseDTO {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
+public class CourseResponseDTO {
+	
+	@NotNull
 	private Long courseId;
+	
+	@NotBlank
 	private String title;
+	
+	@NotBlank
 	private String description;
 
 	public CourseResponseDTO() {

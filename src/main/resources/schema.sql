@@ -1,21 +1,25 @@
 
--- Drop tables if they exist
-DROP TABLE IF EXISTS enrolled;
-DROP TABLE IF EXISTS courses;
-
--- Create courses table
+-- Courses table
 CREATE TABLE courses (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    description TEXT,
-    created_by CHAR(36) NOT NULL -- UUID stored as string
+    description TEXT NOT NULL,
+    course_duration INT NOT NULL,
+    created_by VARCHAR(36) NOT NULL -- UUID of teacher
 );
 
--- Create enrolled table
+-- Learning objectives table
+CREATE TABLE course_learning_objectives (
+    course_id BIGINT NOT NULL,
+    learning_objectives VARCHAR(255),
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+);
+
+-- Enrollment table
 CREATE TABLE enrolled (
     enrollment_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     course_id BIGINT NOT NULL,
-    student_id CHAR(36) NOT NULL, -- UUID stored as string
-    enrolled_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+    student_id VARCHAR(36) NOT NULL, -- UUID of student
+    enrolled_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (course_id) REFERENCES courses(id)
 );

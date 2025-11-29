@@ -1,28 +1,37 @@
 
--- Insert sample courses
-INSERT INTO courses (title, description, created_by) VALUES
-('Java Basics', 'Introduction to Java programming', '550e8400-e29b-41d4-a716-446655440000'),
-('Spring Boot Fundamentals', 'Learn how to build REST APIs using Spring Boot', '550e8400-e29b-41d4-a716-446655440001'),
-('Advanced Java', 'Deep dive into Java concurrency and streams', '550e8400-e29b-41d4-a716-446655440002'),
-('Microservices Architecture', 'Design and implement microservices using Spring Cloud', '550e8400-e29b-41d4-a716-446655440003'),
-('Database Design', 'Learn relational database design and normalization', '550e8400-e29b-41d4-a716-446655440004'),
-('React for Beginners', 'Build interactive UIs using React.js', '550e8400-e29b-41d4-a716-446655440005'),
-('Angular Essentials', 'Master Angular framework basics', '550e8400-e29b-41d4-a716-446655440006'),
-('Python for Data Science', 'Learn Python libraries for data analysis', '550e8400-e29b-41d4-a716-446655440007'),
-('Machine Learning Basics', 'Introduction to ML algorithms and concepts', '550e8400-e29b-41d4-a716-446655440008'),
-('Docker & Kubernetes', 'Containerization and orchestration fundamentals', '550e8400-e29b-41d4-a716-446655440009');
+-- Insert courses with teacher UUIDs
+INSERT INTO courses (title, description, course_duration, created_by)
+VALUES
+('Java Basics', 'Learn fundamentals of Java programming', 30, '111e8400-e29b-41d4-a716-446655440000'),
+('Spring Boot Essentials', 'Build REST APIs using Spring Boot', 45, '222e8400-e29b-41d4-a716-446655440001'),
+('React for Beginners', 'Learn React fundamentals and hooks', 25, '333e8400-e29b-41d4-a716-446655440002');
 
--- Insert sample enrollments
+-- Insert learning objectives for each course
+INSERT INTO course_learning_objectives (course_id, learning_objectives) VALUES
+(1, 'Variables'),
+(1, 'Loops'),
+(1, 'Methods'),
+(1, 'OOP'),
+(1, 'Collections'),
+(1, 'Exceptions'),
+(2, 'Spring Core'),
+(2, 'Spring MVC'),
+(2, 'JPA'),
+(2, 'REST'),
+(2, 'Security'),
+(2, 'Testing'),
+(3, 'Components'),
+(3, 'Props'),
+(3, 'State'),
+(3, 'Hooks'),
+(3, 'Routing'),
+(3, 'Forms');
+
+-- Insert enrollments with student UUIDs
 INSERT INTO enrolled (course_id, student_id, enrolled_at) VALUES
-(1, '660e8400-e29b-41d4-a716-446655440010', CURRENT_TIMESTAMP),
-(1, '660e8400-e29b-41d4-a716-446655440011', CURRENT_TIMESTAMP),
-(2, '660e8400-e29b-41d4-a716-446655440012', CURRENT_TIMESTAMP),
-(2, '660e8400-e29b-41d4-a716-446655440013', CURRENT_TIMESTAMP),
-(3, '660e8400-e29b-41d4-a716-446655440014', CURRENT_TIMESTAMP),
-(4, '660e8400-e29b-41d4-a716-446655440015', CURRENT_TIMESTAMP),
-(5, '660e8400-e29b-41d4-a716-446655440016', CURRENT_TIMESTAMP),
-(6, '660e8400-e29b-41d4-a716-446655440017', CURRENT_TIMESTAMP),
-(7, '660e8400-e29b-41d4-a716-446655440018', CURRENT_TIMESTAMP),
-(8, '660e8400-e29b-41d4-a716-446655440019', CURRENT_TIMESTAMP),
-(9, '660e8400-e29b-41d4-a716-446655440020', CURRENT_TIMESTAMP),
-(10, '660e8400-e29b-41d4-a716-446655440021', CURRENT_TIMESTAMP);
+(1, '550e8400-e29b-41d4-a716-446655440010', CURRENT_TIMESTAMP),
+(1, '550e8400-e29b-41d4-a716-446655440011', CURRENT_TIMESTAMP),
+(2, '550e8400-e29b-41d4-a716-446655440012', CURRENT_TIMESTAMP),
+(2, '550e8400-e29b-41d4-a716-446655440013', CURRENT_TIMESTAMP),
+(2, '550e8400-e29b-41d4-a716-446655440014', CURRENT_TIMESTAMP),
+(3, '550e8400-e29b-41d4-a716-446655440015', CURRENT_TIMESTAMP);
