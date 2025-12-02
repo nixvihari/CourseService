@@ -4,6 +4,7 @@ import com.spark.lms.courseservice.dto.CourseDTO;
 import com.spark.lms.courseservice.dto.CourseDetailsDTO;
 import com.spark.lms.courseservice.dto.CourseRequestDTO;
 import com.spark.lms.courseservice.dto.CourseResponseDTO;
+import com.spark.lms.courseservice.dto.EnrollmentDTO;
 import com.spark.lms.courseservice.dto.StudentCourseDTO;
 import com.spark.lms.courseservice.entity.Course;
 import com.spark.lms.courseservice.service.CourseService;
@@ -29,7 +30,7 @@ public class CourseController {
     	List<CourseResponseDTO> courseList = courseService.getCourses();
     	return ResponseEntity.ok(courseList);
     }
-
+    
     // Get Enrolled Courses
     @GetMapping("/enrolledCourses")
     public ResponseEntity<List<StudentCourseDTO>> getEnrolledCourses(
@@ -96,4 +97,28 @@ public class CourseController {
         courseService.deleteCourse(id);
         return ResponseEntity.ok().build();
     }
+    
+    
+    @PostMapping("/enroll/{courseId}")
+    public ResponseEntity<?> enrollStudent(
+            @PathVariable Long courseId,
+            @RequestHeader("X-User-Id") String studentId,
+            @RequestHeader("X-Role") String role
+    ) {
+        if (!"STUDENT".equalsIgnoreCase(role) && !role.equalsIgnoreCase("ADMIN")) {
+            return ResponseEntity.status(403).body("Only students can enroll in courses.");
+        }
+
+        CourseDetailsDTO result = courseService.enrollStudent(courseId, studentId);
+
+        if (result == null) {
+            // Student already enrolled
+            return ResponseEntity.noContent().build();
+        }
+
+        // Enrollment successful
+        return ResponseEntity.ok(result);
+    }
+
+    
 }

@@ -5,6 +5,7 @@ import com.spark.lms.courseservice.dto.CourseDTO;
 import com.spark.lms.courseservice.dto.CourseDetailsDTO;
 import com.spark.lms.courseservice.dto.CourseRequestDTO;
 import com.spark.lms.courseservice.dto.CourseResponseDTO;
+import com.spark.lms.courseservice.dto.EnrollmentDTO;
 import com.spark.lms.courseservice.dto.StudentCourseDTO;
 import com.spark.lms.courseservice.entity.Course;
 import com.spark.lms.courseservice.entity.Enrollment;
@@ -92,4 +93,31 @@ public class CourseServiceImpl implements CourseService {
 				.map(course -> new CourseResponseDTO(course.getId(), course.getTitle(), course.getDescription()))
 				.collect(Collectors.toList());
 	}
+	
+	
+	@Override
+	public CourseDetailsDTO enrollStudent(Long courseId, String studentId) {
+
+	    Course course = courseRepo.findById(courseId)
+	            .orElseThrow(() -> new RuntimeException("Course not found"));
+
+	    Boolean alreadyEnrolled = enrollmentRepo.isEnrolled(courseId, studentId);
+
+	    if (alreadyEnrolled) {
+	        // return null so controller can send 204 No Content
+	        return null;
+	    }
+
+	    Enrollment enrollment = new Enrollment(
+	            courseId,
+	            studentId,
+	            java.time.LocalDateTime.now()
+	    );
+	    enrollmentRepo.save(enrollment);
+	    
+	    CourseDetailsDTO response = getCourseById(courseId, studentId);
+
+	    return response;
+	}
+
 }
