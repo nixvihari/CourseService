@@ -4,10 +4,12 @@ import com.spark.lms.courseservice.dto.CourseDTO;
 import com.spark.lms.courseservice.dto.StudentCourseDTO;
 import com.spark.lms.courseservice.entity.Course;
 import com.spark.lms.courseservice.entity.Enrollment;
+import com.spark.lms.courseservice.exception.CourseNotFoundException;
 import com.spark.lms.courseservice.repository.CourseRepository;
 import com.spark.lms.courseservice.repository.EnrollmentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,13 +34,16 @@ public class CourseServiceImpl implements CourseService {
                 .map(Enrollment::getCourseId)
                 .collect(Collectors.toList());
 
+        if (courseIds.isEmpty()) {
+            return Collections.emptyList();  // Early return to avoid repo call
+        }
+
         List<Course> courses = courseRepo.findAllById(courseIds);
 
         return courses.stream()
                 .map(c -> new StudentCourseDTO(c.getId(), c.getTitle(), c.getDescription()))
                 .collect(Collectors.toList());
     }
-
   
 
     @Override
@@ -65,6 +70,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void deleteCourse(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Course ID cannot be null");
+        }
+
+        if (!courseRepo.existsById(id)) {
+            throw new CourseNotFoundException("Course with id " + id + " not found");
+        }
+
         courseRepo.deleteById(id);
     }
 }

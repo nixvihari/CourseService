@@ -22,10 +22,9 @@ public class Enrollment {
 
     public Enrollment() {}
 
-    public Enrollment(Long courseId, Long studentId, LocalDateTime enrolledAt) {
+    public Enrollment(Long courseId, Long studentId) {
         this.courseId = courseId;
         this.studentId = studentId;
-        this.enrolledAt = enrolledAt;
     }
 
     public Long getEnrollmentId() { return enrollmentId; }
